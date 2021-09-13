@@ -20,7 +20,7 @@ class TableViewController: UITableViewController {
 		search = UISearchController(searchResultsController: nil)
 		search.searchResultsUpdater = self
 		navigationItem.searchController = search
-		search.hidesNavigationBarDuringPresentation = false
+//		search.hidesNavigationBarDuringPresentation = false
 		search.searchBar.isTranslucent = true
 		search.searchBar.delegate = self
 		search.obscuresBackgroundDuringPresentation = false
@@ -167,6 +167,7 @@ class TableViewController: UITableViewController {
 		let swipeEdit = UIContextualAction(style: .normal, title: "Edit") { (action, view, success) in
 			self.editCurrentItem(UIButton())
 			saveIndex(at: indexPath.row)
+//			saveValue(at: vocabularyItem[indexPath.row]["Name"] as! String)
 		}
 		swipeEdit.backgroundColor = #colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)
 		
@@ -225,7 +226,7 @@ class TableViewController: UITableViewController {
 
 }
 
-extension TableViewController: UISearchResultsUpdating, UISearchBarDelegate {
+extension TableViewController: UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate {
 	
 	func searchBarIsEmpty() -> Bool {
 		return search.searchBar.text?.isEmpty ?? true

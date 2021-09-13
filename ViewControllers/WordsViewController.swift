@@ -29,11 +29,13 @@ class WordsViewController: UIViewController {
 	var textOfNavigationTitle: String = ""
 	
 	var refreshData = UIRefreshControl()
+//	var originOfMyListItemView = (view.frame.height - listItemView.frame.height)
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		myNavigTitle()
+//		originOfMyListItemView()
 //		navigationController?.navigationBar.prefersLargeTitles = false
 //		navigationItem.largeTitleDisplayMode = .never
 		
@@ -55,6 +57,7 @@ class WordsViewController: UIViewController {
 		listTableView.delegate = self
 		listTableView.dataSource = self
 		listTableView.tableFooterView = UIView()
+		listItemView.frame.origin.y = (view.frame.height - listItemView.frame.height)
 //		listTableView.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
 		
 		listItemField.delegate = self
@@ -110,6 +113,18 @@ class WordsViewController: UIViewController {
 		listTableView.addSubview(refreshData)
 		
 		clearButton.addTarget(self, action: #selector(clearButtonAction), for: .touchUpInside)
+		
+//		let viewY = view.frame.origin.y
+//		let viewH = view.frame.height
+//		let myViewY = listItemView.frame.origin.y
+//		let myViewMaxY = listItemView.frame.maxY
+//		let myH = listItemView.frame.height
+//
+//		print("Origin экрана по Y : \(viewY)")
+//		print("Высота экрана : \(viewH)")
+//		print("Origin моего вью по Y : \(myViewY)")
+//		print("MaxY моего вью по Y : \(myViewMaxY)")
+//		print("Высота моего вью : \(myH as Any)")
 	}
 	
 	@objc func clearButtonAction() {
@@ -298,11 +313,32 @@ extension WordsViewController: UITextFieldDelegate {
 		return subtitleItemField.resignFirstResponder()
 	}
 	
+//	func originOfMyListItemView() {
+//		listItemView.frame.origin.y += (listItemView.frame.height - listItemView.frame.height)
+		
+//		let originOfView = (view.frame.height - listItemView.frame.height)
+//		let r: () = (listItemView.frame.origin.y -= view.frame.height)
+//		listItemView.frame.origin.y -= view.frame.height
+//		let originOfView = ((listItemView.frame.height + listItemView.frame.origin.y) + (view.frame.height - listItemView.frame.height))
+//		print("Новый Origin моего вью : \(originOfView)")
+//	}
+	
 	@objc func keyboardWillShow(_ notification: Notification) {
 		let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-		if listItemView.frame.maxY != keyboardSize!.origin.y && listItemField.becomeFirstResponder() {
-			listItemView.frame.origin.y -= keyboardSize!.height
+		let myFieldViewMaxY = (listItemView.frame.maxY - listItemView.frame.origin.y) + listItemView.frame.origin.y
+		if listItemView.frame.maxY != keyboardSize!.origin.y {
+			listItemView.frame.origin.y -= (myFieldViewMaxY - keyboardSize!.origin.y)
 		}
+		
+//		if listItemView.frame.maxY >= keyboardSize!.origin.y {
+//			listItemView.frame.origin.y -= (myFieldViewMaxY - keyboardSize!.origin.y)
+//		} else if listItemView.frame.maxY <= keyboardSize!.origin.y {
+//			listItemView.frame.origin.y += (keyboardSize!.origin.y - myFieldViewMaxY)
+//		}
+//		let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+//		if listItemView.frame.maxY != keyboardSize!.origin.y && listItemField.becomeFirstResponder() {
+//			listItemView.frame.origin.y -= keyboardSize!.height
+//		}
 //		let myViewPlusKeyboardSize: () = listItemView.frame.origin.y -= keyboardSize!.height
 //		listItemView.frame.origin.y -= keyboardSize!.height
 		
@@ -312,7 +348,7 @@ extension WordsViewController: UITextFieldDelegate {
 //		let myViewMaxY = listItemView.frame.maxY
 //		let y = keyboardSize?.origin.y
 //		let h = keyboardSize?.height
-//		
+//
 //
 //		print("Origin экрана по Y : \(viewY)")
 //		print("Высота экрана : \(viewH)")
@@ -323,7 +359,20 @@ extension WordsViewController: UITextFieldDelegate {
 	}
 	
 	@objc func keyboardWillHide(_ notification: Notification) {
-		let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-		listItemView.frame.origin.y += keyboardSize!.height
+		listItemView.frame.origin.y = (view.frame.height - listItemView.frame.height)
+		
+		
+//		let viewY = view.frame.origin.y
+//		let viewH = view.frame.height
+//		let myViewY = listItemView.frame.origin.y
+//		let myViewMaxY = listItemView.frame.maxY
+//		let myH = listItemView.frame.height
+//
+//		print("Origin экрана по Y : \(viewY)")
+//		print("Высота экрана : \(viewH)")
+//		print("Origin моего вью по Y : \(myViewY)")
+//		print("MaxY моего вью по Y : \(myViewMaxY)")
+//		print("Высота моего вью : \(myH as Any)")
+//		print("Новый Origin моего вью : \(originOfView)")
 	}
 }

@@ -34,6 +34,7 @@ class ModalViewController: UIViewController {
 //		modalWindow.backgroundColor = .white
 //		view.backgroundColor = UIBlurEffect(style: .prominent)
 //		view.layer.backgroundColor = CGColor(gray: 1, alpha: 0.4)
+		modalWindow.center = view.center
 		modalWindow.layer.cornerRadius = 8
 		modalTextField.layer.cornerRadius = 8
 		modalCreateButton.layer.cornerRadius = 8
@@ -101,14 +102,28 @@ extension ModalViewController: UITextFieldDelegate {
 
 	@objc func keyboardWillShow(_ notification: Notification) {
 		let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+		let myModalViewMaxY = (modalWindow.frame.maxY - modalWindow.frame.origin.y) + modalWindow.frame.origin.y
 		if modalWindow.frame.maxY != keyboardSize!.origin.y {
-			modalWindow.frame.origin.y -= keyboardSize!.height / 4
+			modalWindow.frame.origin.y -= ((myModalViewMaxY - keyboardSize!.origin.y) + 50.0)
 		}
+		
+//		let viewY = view.frame.origin.y
+//		let viewH = view.frame.height
+//		let modalViewY = modalWindow.frame.origin.y
+//		let modalViewMaxY = modalWindow.frame.maxY
+//		let y = keyboardSize?.origin.y
+//		let h = keyboardSize?.height
+//
+//		print("Origin экрана по Y : \(viewY)")
+//		print("Высота экрана : \(viewH)")
+//		print("Origin моего вью по Y : \(modalViewY)")
+//		print("MaxY моего вью по Y : \(modalViewMaxY)")
+//		print("Origin клавиатуры по Y : \(y as Any)")
+//		print("Высота клавиатуры : \(h as Any)")
+		
 	}
 
 	@objc func keyboardWillHide(_ notification: Notification) {
-		let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-		modalWindow.frame.origin.y += keyboardSize!.height / 4
+		modalWindow.center = view.center
 	}
-	
 }

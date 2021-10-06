@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xXu-EQ-uU8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xXu-EQ-uU8">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,7 +23,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CellWords" textLabel="5xj-dv-8Sy" detailTextLabel="A5o-fu-HcT" style="IBUITableViewCellStyleValue1" id="MZ2-lM-VAs">
-                                        <rect key="frame" x="0.0" y="24.5" width="375" height="47.5"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="375" height="47.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MZ2-lM-VAs" id="HdK-G6-z95">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="47.5"/>
@@ -73,11 +74,6 @@
                                         <rect key="frame" x="72" y="10" width="30" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bq7-Rg-5Rl">
-                                        <rect key="frame" x="326" y="10" width="36" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Clear"/>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <gestureRecognizers/>
@@ -130,12 +126,11 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="sYF-lL-di6">
-                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="LmD-kV-4x3"/>
+                        <barButtonItem key="rightBarButtonItem" image="back" id="LmD-kV-4x3"/>
                     </navigationItem>
                     <connections>
                         <outlet property="addItemToList" destination="HhS-Wz-gZy" id="ClT-vk-bxF"/>
                         <outlet property="addSubtitleToList" destination="2pc-is-kcK" id="Glf-dr-HBf"/>
-                        <outlet property="clearButton" destination="Bq7-Rg-5Rl" id="Jx6-eS-Ktd"/>
                         <outlet property="countItemsLabel" destination="m30-1r-b4M" id="DRG-cs-1oF"/>
                         <outlet property="flagButtonFromLeftSide" destination="1E9-um-Yj2" id="c6c-yt-bbH"/>
                         <outlet property="flagButtonFromRightSide" destination="rgo-Bw-UOm" id="VCk-cc-qWd"/>
@@ -167,7 +162,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LanguageCell" id="LmE-y5-cl0" customClass="ListOfLanguagesCell" customModule="Dictioly" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="24.5" width="375" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="375" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LmE-y5-cl0" id="Aya-g6-sQz">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -243,7 +238,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" rowHeight="80" id="049-XO-ofx" customClass="WordListCell" customModule="Dictioly" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="24.5" width="375" height="80"/>
+                                <rect key="frame" x="0.0" y="44.5" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="049-XO-ofx" id="HG4-Ks-t6A">
                                     <rect key="frame" x="0.0" y="0.0" width="349.5" height="80"/>
@@ -260,7 +255,7 @@
                                             <rect key="frame" x="16" y="45" width="20" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="-&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O3L-SX-bDf">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="-&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O3L-SX-bDf" userLabel="Right Arrow">
                                             <rect key="frame" x="44" y="46" width="17" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -285,6 +280,7 @@
                                     <outlet property="flagImageFromLeftSide" destination="Q6k-cu-UNS" id="cJI-kQ-x5B"/>
                                     <outlet property="flagImageFromRightSide" destination="woT-5y-Wet" id="PqL-o8-kNK"/>
                                     <outlet property="nameOfWordListLabel" destination="3Fh-Sq-Ab5" id="g9U-cm-Izh"/>
+                                    <outlet property="rightArrow" destination="O3L-SX-bDf" id="em4-3m-g5X"/>
                                     <segue destination="8Cm-ou-Lbb" kind="show" id="aOJ-iN-otE"/>
                                 </connections>
                             </tableViewCell>
@@ -297,11 +293,13 @@
                     <navigationItem key="navigationItem" title="Dictioly" id="9Zy-t1-3ny">
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="T1j-oT-Esm">
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <action selector="addNewItem:" destination="gQd-1P-Q3c" id="f4A-DD-Rmp"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem systemItem="edit" id="BKR-ZC-Tez">
+                            <barButtonItem image="arrow.up.arrow.down" catalog="system" id="BKR-ZC-Tez">
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <action selector="editPositionItem:" destination="gQd-1P-Q3c" id="BU4-pv-E6F"/>
                                 </connections>
@@ -538,6 +536,8 @@
     <resources>
         <image name="arrow.forward.circle.fill" catalog="system" width="128" height="121"/>
         <image name="arrow.left.arrow.right" catalog="system" width="119" height="128"/>
+        <image name="arrow.up.arrow.down" catalog="system" width="128" height="98"/>
+        <image name="back" width="128" height="128"/>
         <image name="clear" catalog="system" width="128" height="114"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="121"/>
         <image name="russia" width="180" height="180"/>

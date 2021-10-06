@@ -10,12 +10,13 @@ import UIKit
 class TableViewController: UITableViewController {
 	
 	var search = UISearchController()
+	let backgroundColorView = UIView()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-//		navigationController?.navigationBar.prefersLargeTitles = true
-//		navigationItem.largeTitleDisplayMode = .always
+		navigationController?.navigationBar.prefersLargeTitles = true
+		navigationItem.largeTitleDisplayMode = .always
 		
 		search = UISearchController(searchResultsController: nil)
 		search.searchResultsUpdater = self
@@ -25,12 +26,6 @@ class TableViewController: UITableViewController {
 		search.searchBar.delegate = self
 		search.obscuresBackgroundDuringPresentation = false
 		search.searchBar.placeholder = "Найти список слов"
-		
-		
-		
-		
-		tableView.tableFooterView = UIView()
-		tableView.backgroundColor = UIColor.systemGray6
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -59,6 +54,11 @@ class TableViewController: UITableViewController {
 			modalVC.modalPresentationStyle = .fullScreen
 			modalVC.view.backgroundColor = UIColor.gray.withAlphaComponent(0.4)
 			modalVC.view.isOpaque = false
+			if self.searchBarIsActive() {
+				modalVC.modalTextField.text = filtredItem[indexOfCell]
+			} else {
+				modalVC.modalTextField.text = vocabularyItem[indexOfCell]["Name"] as? String
+			}
 			present(modalVC, animated: true, completion: nil)
 		}
 		
@@ -69,7 +69,6 @@ class TableViewController: UITableViewController {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
 			self.tableView.reloadData()
 		}
-		
 	}
 
 	// MARK: - Table view data source
@@ -82,9 +81,16 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
 		
-		if searchBarIsActive() {
+		if searchBarIsActive() && filtredItem.count > 0 {
+			backgroundColorView.backgroundColor = UIColor.systemGray6
+			tableView.backgroundView = backgroundColorView
 			return filtredItem.count
+		} else if searchBarIsActive() && filtredItem.count <= 0 {
+			tableView.backgroundView = UIImageView.init(image: UIImage.init(named: "backroundImage"))
+			return 0
 		} else {
+			backgroundColorView.backgroundColor = UIColor.systemGray6
+			tableView.backgroundView = backgroundColorView
 			return vocabularyItem.count
 		}
     }
@@ -101,43 +107,27 @@ class TableViewController: UITableViewController {
 				cell.flagImageFromLeftSide.image = #imageLiteral(resourceName: "usa")
 				cell.flagImageFromRightSide.image = #imageLiteral(resourceName: "russia")
 				cell.countItemsLabel.text = "\(filtredListItem.count) фраз"
+				
+				if tableView.isEditing {
+					cell.nameOfWordListLabel.textColor = .systemGray
+					cell.flagImageFromLeftSide.alpha = 0.5
+					cell.rightArrow.textColor = .systemGray
+					cell.flagImageFromRightSide.alpha = 0.5
+					cell.countItemsLabel.textColor = .systemGray
+				} else {
+					cell.nameOfWordListLabel.textColor = .black
+					cell.flagImageFromLeftSide.alpha = 1
+					cell.rightArrow.textColor = .black
+					cell.flagImageFromRightSide.alpha = 1
+					cell.countItemsLabel.textColor = .black
+				}
 			}
 			return cell
 		} else {
 			return WordListCell()
-//			var error: UITableViewCell = "Not Found"
-//			return customCell.error
 		}
-		
-//		cell.nameOfWordListLabel.text = vocabularyItem[indexPath.row]["Name"] as? String
-//		cell.flagImageFromLeftSide.image = #imageLiteral(resourceName: "usa")
-//		cell.flagImageFromRightSide.image = #imageLiteral(resourceName: "russia")
-//		cell.countItemsLabel.text = "\(listItem.count) фраз"
-//		return cell
-		
-//		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-//		if searchBarIsActive() {
-//			cell.textLabel?.text = filtredItem[indexPath.row]
-//		} else {
-//			cell.textLabel?.text = vocabularyItem[indexPath.row]["Name"] as? String
-//		}
-		
-		
-		// add border and color
-//		cell.backgroundColor = UIColor.white
-//		cell.layer.borderColor = UIColor.black.cgColor
-//		cell.layer.borderWidth = 1
-//		cell.layer.cornerRadius = 8
-//		cell.clipsToBounds = true
-		
-//		return cell
     }
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//		if indexPath.row == 0 {
-//			return 100
-//		} else {
-//			return 60
-//		}
 		return 80
 	}
     
@@ -145,9 +135,9 @@ class TableViewController: UITableViewController {
 		let destinationVC: WordsViewController = segue.destination as! WordsViewController
 		let indexPathCell = tableView.indexPathForSelectedRow?.row
 		let valueOfVocabularyItem = vocabularyItem[indexPathCell!]["Name"] as! String
-		saveValue(at: valueOfVocabularyItem)
-		filteredListItems(currentItem: valueOfVocabularyItem)
-		filteredSubtitleItems(currentItem: valueOfVocabularyItem)
+		_ = saveValue(at: valueOfVocabularyItem)
+		_ = filteredListItems(currentItem: valueOfVocabularyItem)
+		_ = filteredSubtitleItems(currentItem: valueOfVocabularyItem)
 		destinationVC.textOfNavigationTitle = valueOfVocabularyItem
 	}
     
@@ -158,24 +148,39 @@ class TableViewController: UITableViewController {
     }
 	
 	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-		let swipeDelete = UIContextualAction(style: .normal, title: "Delete") { (action, view, success) in
-			removeItem(at: indexPath.row)
-			tableView.deleteRows(at: [indexPath], with: .middle)
-		}
-		swipeDelete.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
 		
-		let swipeEdit = UIContextualAction(style: .normal, title: "Edit") { (action, view, success) in
+		_ = saveIndex(at: indexPath.row)
+		
+		if searchBarIsActive() {
+			_ = indexOfComperisonValues(incomingIndex: indexPath.row)
+		}
+		
+		let swipeDelete = UIContextualAction(style: .normal, title: "Удалить") { (action, view, success) in
+
+			if	self.searchBarIsActive() {
+				removeFiltredItem(indexPath.row)
+				removeMainItem(indexOfComparisonValue)
+				tableView.deleteRows(at: [indexPath], with: .middle)
+			} else {
+				removeMainItem(indexPath.row)
+				tableView.deleteRows(at: [indexPath], with: .middle)
+			}
+		}
+		swipeDelete.backgroundColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
+		swipeDelete.image = .init(systemName: "trash.fill")
+		
+		let swipeEdit = UIContextualAction(style: .normal, title: "Изменить") { (action, view, success) in
 			self.editCurrentItem(UIButton())
-			saveIndex(at: indexPath.row)
-//			saveValue(at: vocabularyItem[indexPath.row]["Name"] as! String)
+			
 		}
-		swipeEdit.backgroundColor = #colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)
-		
+		swipeEdit.backgroundColor = #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)
+		swipeEdit.image = .init(systemName: "rectangle.and.pencil.and.ellipsis")
 		
 		let blockingLongSwipe = UISwipeActionsConfiguration(actions: [swipeDelete, swipeEdit])
 		blockingLongSwipe.performsFirstActionWithFullSwipe = false
 		
 		return blockingLongSwipe
+		
 	}
     
     // Override to support rearranging the table view.
@@ -226,7 +231,14 @@ class TableViewController: UITableViewController {
 
 }
 
+// MARK: - Search Bar settings
+
 extension TableViewController: UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate {
+	
+	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+		search.searchBar.setValue("Отмена", forKey: "cancelButtonText")
+		search.searchBar.tintColor = .black
+	}
 	
 	func searchBarIsEmpty() -> Bool {
 		return search.searchBar.text?.isEmpty ?? true
@@ -237,17 +249,11 @@ extension TableViewController: UISearchResultsUpdating, UISearchBarDelegate, UIS
 	}
 	
 	func filtredSearch(searchText: String) {
-		filteredItems(currentItem: searchText)
+		_ = filteredItems(currentItem: searchText)
 		tableView.reloadData()
 	}
 	
 	func updateSearchResults(for searchController: UISearchController) {
 		filtredSearch(searchText: search.searchBar.text!)
 	}
-	
-//	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-//		let cancelSearchButton = search.searchBar.value(forKey: "cancelButton") as! UIButton
-//		cancelSearchButton.setTitle("Отмена", for: .normal)
-//	}
-
 }

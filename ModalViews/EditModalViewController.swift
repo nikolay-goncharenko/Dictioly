@@ -15,12 +15,9 @@ class EditModalViewController: UIViewController {
 	@IBOutlet weak var modalEditButton: UIButton!
 	@IBOutlet weak var modalCloseButton: UIButton!
 	
-	var currentItem = vocabularyItem[indexOfCell]["Name"] as? String
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-//		view.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
-//		modalWindow.backgroundColor = .white
+		
 		modalWindow.center = view.center
 		modalWindow.layer.cornerRadius = 8
 		modalTextField.layer.cornerRadius = 8
@@ -28,7 +25,6 @@ class EditModalViewController: UIViewController {
 		modalCloseButton.layer.cornerRadius = 8
 		
 		modalTextField.delegate = self
-		modalTextField.text = currentItem
 		modalTextField.becomeFirstResponder()
 		modalTextField.clearButtonMode = .whileEditing
 		modalTextField.layer.borderWidth = 0.1
@@ -42,18 +38,19 @@ class EditModalViewController: UIViewController {
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-		
-//		print(currentItem!)
-//		print(indexOfCell)
-//		print(vocabularyItem[indexOfCell]["Name"] as! String)
 	}
 	
 	// MARK: - Actions of ModalViewContoller
 	
 	@IBAction func editCurrentElement(_ sender: UIButton) {
-		if modalTextField.text?.isEmpty == false {
-			changeItem(at: saveIndex(at: indexOfCell), newNameItem: modalTextField.text!)
+		if modalTextField.text?.isEmpty == false && filtredItem.isEmpty == false {
+			changeFiltredItem(at: indexOfCell, newNameItem: modalTextField.text!)
+			changeVocabularyItem(at: indexOfComparisonValue, newNameItem: modalTextField.text!)
 		}
+		if modalTextField.text?.isEmpty == false && filtredItem.isEmpty == true {
+			changeVocabularyItem(at: indexOfCell, newNameItem: modalTextField.text!)
+		}
+		
 		dismiss(animated: true, completion: nil)
 	}
 	

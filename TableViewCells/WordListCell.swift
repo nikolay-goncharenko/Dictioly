@@ -11,6 +11,7 @@ class WordListCell: UITableViewCell {
 
 	@IBOutlet weak var nameOfWordListLabel: UILabel!
 	@IBOutlet weak var flagImageFromLeftSide: UIImageView!
+	@IBOutlet weak var rightArrow: UILabel!
 	@IBOutlet weak var flagImageFromRightSide: UIImageView!
 	@IBOutlet weak var countItemsLabel: UILabel!
 	

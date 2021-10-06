@@ -7,6 +7,9 @@
 
 import Foundation
 
+// MARK: - Storages for data
+// Вычисляемые перменные формата массив-словарей для хранения данных
+
 var vocabularyItem: [[String: Any]] {
 	set {
 		UserDefaults.standard.setValue(newValue, forKey: "ItemDataKey")
@@ -52,23 +55,44 @@ var subtitleItem: [[String: Any]] {
 	}
 }
 
-//var listOfFlagsAndLanguages = ["usa":"Английский (США)", "gb":"Английский", "russia":"Русский", "ua":"Украинский"]
 var listOfFlagsAndLanguages: [String] = ["Английский (США)", "Английский (Великобритания)", "Русский", "Украинский"]
-//var filtredListOfFlagsAndLanguages: [String] = []
-//
-//func filtredListOfFlagsAndLanguage(currentItem: String) -> Array<String> {
-//	filtredListOfFlagsAndLanguages.removeAll()
-//	filtredListOfFlagsAndLanguages.append(listOfFlagsAndLanguages.filter { currentItem in
-//		return currentItem.lowercased().contains(currentItem.lowercased())
-//	})
-//	filtredListOfFlagsAndLanguages.removeAll{$0 == ""}
-//}
+
+// MARK: - Service Methods and Variables
 
 var indexOfCell: Int = 0
 
 func saveIndex(at index: Int) -> Int {
 	indexOfCell = index
 	return indexOfCell
+}
+
+var vocabularyItemValue: String = ""
+
+func saveValue(at value: String) -> String {
+	vocabularyItemValue = value
+	return vocabularyItemValue
+}
+
+// MARK: - Methods & Variables for filtering data
+
+var indexOfComparisonValue: Int = 0
+
+func indexOfComperisonValues(incomingIndex: Int) -> Int {
+	
+	let filtredItemIndex: Int = incomingIndex
+	var vocabularyValue: String = "".lowercased()
+	
+	for (index, dictionary) in vocabularyItem.enumerated() {
+		for (_, value) in dictionary {
+			
+			vocabularyValue = value as! String
+			
+			if vocabularyValue == filtredItem[filtredItemIndex] {
+				indexOfComparisonValue = index
+			}
+		}
+	}
+	return indexOfComparisonValue
 }
 
 var filtredItem: [String] = []
@@ -87,15 +111,43 @@ func filteredItems(currentItem: String) -> Array<String> {
 	return filtredItem
 }
 
-func addItem(nameItem: String) {
-	vocabularyItem.append(["Name": nameItem])
+var indexOfFiltredListItem: Int = 0
+var indexOfFiltredSubtitleItem: Int = 0
+
+func indexOfFiltredListItems(incomingIndex: Int) -> Int {
+	
+	let filtredListItemIndex: Int = incomingIndex
+	var listItemValue: String = "".lowercased()
+	
+	for (index, dictionary) in listItem.enumerated() {
+		for (_, value) in dictionary {
+			
+			listItemValue = value as! String
+			
+			if listItemValue == filtredListItem[filtredListItemIndex] {
+				indexOfFiltredListItem = index
+			}
+		}
+	}
+	return indexOfFiltredListItem
 }
 
-var vocabularyItemValue: String = ""
-
-func saveValue(at value: String) -> String {
-	vocabularyItemValue = value
-	return vocabularyItemValue
+func indexOfFiltredSubtitleItems(incomingIndex: Int) -> Int {
+	
+	let filtredSubtitleItemIndex: Int = incomingIndex
+	var subtitleItemValue: String = "".lowercased()
+	
+	for (index, dictionary) in subtitleItem.enumerated() {
+		for (_, value) in dictionary {
+			
+			subtitleItemValue = value as! String
+			
+			if subtitleItemValue == filtredSubtitleItem[filtredSubtitleItemIndex] {
+				indexOfFiltredSubtitleItem = index
+			}
+		}
+	}
+	return indexOfFiltredSubtitleItem
 }
 
 var filtredListItem: [String] = []
@@ -129,6 +181,11 @@ func filteredSubtitleItems(currentItem: String) -> Array<String> {
 	return filtredSubtitleItem
 }
 
+// MARK: - Methods for saving data to storege
+
+func addItem(nameItem: String) {
+	vocabularyItem.append(["Name": nameItem])
+}
 
 func addListItem(nameItem: String) {
 	listItem.append([vocabularyItemValue: nameItem])
@@ -138,21 +195,37 @@ func addSubtitleItem(nameItem: String) {
 	subtitleItem.append([vocabularyItemValue: nameItem])
 }
 
-func removeItem(at index: Int) {
+// MARK: - Methods for removing data from storege
+
+func removeMainItem(_ index: Int) {
 	vocabularyItem.remove(at: index)
 }
 
-func removeListItem(at index: Int) {
-	listItem.remove(at: index)
+func removeFiltredItem(_ index: Int) {
+	filtredItem.remove(at: index)
 }
 
-func removeSubtitleItem(at index: Int) {
+func removeMainWordListItem(_ index: Int) {
+	listItem.remove(at: index)
 	subtitleItem.remove(at: index)
 }
 
-func changeItem(at index: Int, newNameItem: String) {
+func removeFiltredWordListItem(_ index: Int) {
+	filtredListItem.remove(at: index)
+	filtredSubtitleItem.remove(at: index)
+}
+
+// MARK: - Methods for chenging data in storage
+
+func changeVocabularyItem(at index: Int, newNameItem: String) {
 	vocabularyItem[index].updateValue(newNameItem, forKey: "Name")
 }
+
+func changeFiltredItem(at index: Int, newNameItem: String) {
+	filtredItem[index] = newNameItem
+}
+
+// MARK: - Methods for moving rows in tableView
 
 func moveItem(fromInex: Int, toIndex: Int) {
 	let from = vocabularyItem[fromInex]

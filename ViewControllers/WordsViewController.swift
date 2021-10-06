@@ -25,22 +25,15 @@ class WordsViewController: UIViewController {
 	@IBOutlet weak var flagButtonFromLeftSide: UIButton!
 	@IBOutlet weak var flagButtonFromRightSide: UIButton!
 	
-	@IBOutlet weak var clearButton: UIButton!
 	var textOfNavigationTitle: String = ""
-	
 	var refreshData = UIRefreshControl()
-//	var originOfMyListItemView = (view.frame.height - listItemView.frame.height)
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		myNavigTitle()
-//		originOfMyListItemView()
-//		navigationController?.navigationBar.prefersLargeTitles = false
-//		navigationItem.largeTitleDisplayMode = .never
+		navigationItem.largeTitleDisplayMode = .never
 		
-//		searchItemBar.isHidden = true
-//		searchItemBar.delegate = self
+		myNavigTitle()
 		
 		flagFromLeftSide.layer.borderWidth = 0.1
 		flagFromLeftSide.layer.cornerRadius = 15
@@ -50,7 +43,6 @@ class WordsViewController: UIViewController {
 		flagFromRightSide.layer.cornerRadius = 15
 		flagFromRightSide.tintColor = #colorLiteral(red: 0.8235294118, green: 0.8235294118, blue: 0.8274509804, alpha: 1)
 		
-//		countItemsLabel.text = "\(listItem.count) фраз"
 		countItemsLabel.text = "\(filtredListItem.count) фраз"
 		countItemsLabel.adjustsFontSizeToFitWidth = true
 		
@@ -58,7 +50,6 @@ class WordsViewController: UIViewController {
 		listTableView.dataSource = self
 		listTableView.tableFooterView = UIView()
 		listItemView.frame.origin.y = (view.frame.height - listItemView.frame.height)
-//		listTableView.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
 		
 		listItemField.delegate = self
 		listItemField.borderStyle = .roundedRect
@@ -89,16 +80,10 @@ class WordsViewController: UIViewController {
 		flagButtonFromRightSide.layer.borderColor = #colorLiteral(red: 0.8235294118, green: 0.8235294118, blue: 0.8274509804, alpha: 1)
 		flagButtonFromRightSide.layer.masksToBounds = true
 		
-//		filteredListItems(currentItem: vocabularyItemValue)
-//		filtredTableItems()
-//		listItemField.rightView = addItemToList
-//		listItemField.rightViewMode = .always
-		
 		addItemToList.isHidden = true
 		addItemToList.isEnabled = false
 		addItemToList.tintColor = #colorLiteral(red: 1, green: 0.2705882353, blue: 0.2274509804, alpha: 1)
 		
-//		addSubtitleToList.isHidden = true
 		subtitleItemField.isHidden = true
 		flagButtonFromRightSide.isEnabled = false
 		
@@ -110,44 +95,24 @@ class WordsViewController: UIViewController {
 		subtitleItemField.addTarget(self, action: #selector(blockingAdditionItemToList), for: .editingChanged)
 		
 		refreshData.addTarget(self, action: #selector(manualRefreshData), for: .valueChanged)
-		listTableView.addSubview(refreshData)
-		
-		clearButton.addTarget(self, action: #selector(clearButtonAction), for: .touchUpInside)
-		
-//		let viewY = view.frame.origin.y
-//		let viewH = view.frame.height
-//		let myViewY = listItemView.frame.origin.y
-//		let myViewMaxY = listItemView.frame.maxY
-//		let myH = listItemView.frame.height
-//
-//		print("Origin экрана по Y : \(viewY)")
-//		print("Высота экрана : \(viewH)")
-//		print("Origin моего вью по Y : \(myViewY)")
-//		print("MaxY моего вью по Y : \(myViewMaxY)")
-//		print("Высота моего вью : \(myH as Any)")
-	}
-	
-	@objc func clearButtonAction() {
-		listItem.removeAll()
-		subtitleItem.removeAll()
-		listTableView.reloadData()
+//		listTableView.addSubview(refreshData)
 	}
 	
 	@objc func manualRefreshData() {
 		let forTranslationData = filtredListItem.count
 		let translationData = filtredSubtitleItem.count
-		filteredListItems(currentItem: navigationItem.title!)
-		filteredSubtitleItems(currentItem: navigationItem.title!)
+		_ = filteredListItems(currentItem: navigationItem.title!)
+		_ = filteredSubtitleItems(currentItem: navigationItem.title!)
 		refreshData.endRefreshing()
 		if forTranslationData != filtredListItem.count && translationData != filtredSubtitleItem.count {
 			countItemsLabel.text = "\(filtredListItem.count) фраз"
 			let indexPathNewRow = IndexPath(row: filtredListItem.count - 1, section: 0)
-			print(filtredListItem.count)
-			print(indexPathNewRow)
+//			print(filtredListItem.count)
+//			print(indexPathNewRow)
 			listTableView.insertRows(at: [indexPathNewRow], with: .bottom)
-		} else {
+		} /*else {
 			print("Кол-во ячеек не изменилось")
-		}
+		}*/
 	}
 	
 	@objc func changeLanguage() {
@@ -211,6 +176,7 @@ class WordsViewController: UIViewController {
 		if listItemField.text?.isEmpty == false && subtitleItemField.text?.isEmpty == false {
 			addListItem(nameItem: listItemField.text!)
 			addSubtitleItem(nameItem: subtitleItemField.text!)
+			manualRefreshData()
 		}
 		
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -225,14 +191,6 @@ class WordsViewController: UIViewController {
 	}
 }
 
-//extension UIView {
-//	func addBlurEffect() {
-//		let blurEffect = UIBlurEffect(style: .prominent)
-//		let blurEffectView = UIVisualEffectView(effect: blurEffect)
-//		blurEffectView.frame = listItemView.bounds
-//	}
-//}
-
 extension WordsViewController: UINavigationControllerDelegate {
 	
 	func myNavigTitle() {
@@ -242,15 +200,6 @@ extension WordsViewController: UINavigationControllerDelegate {
 
 extension WordsViewController: UISearchBarDelegate {
 	
-//	func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-//		searchItemBar.showsCancelButton = true
-//		return true
-//	}
-//
-//	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//		self.searchItemBar.showsCancelButton = false
-//		self.searchItemBar.resignFirstResponder()
-//	}
 }
 
 extension WordsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -260,26 +209,31 @@ extension WordsViewController: UITableViewDelegate, UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		
-//		filteredListItems(currentItem: vocabularyItemValue)
-//		return listItem.count
-//		print(listItem)
-//		print(filtredListItem)
-//		tableView.reloadData()
 		return filtredListItem.count
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "CellWords", for: indexPath)
-//		let currentItem = vocabularyItem[indexPath.row]
-//		cell.textLabel?.text = listItem[indexPath.row]["List"] as? String
-//		cell.detailTextLabel?.text = subtitleItem[indexPath.row]["Subtitle"] as? String
 		
-//		cell.textLabel?.text = listItem[indexPath.row][vocabularyItemValue] as? String
-//		cell.detailTextLabel?.text = subtitleItem[indexPath.row][vocabularyItemValue] as? String
-//
 		cell.textLabel?.text = filtredListItem[indexPath.row]
 		cell.detailTextLabel?.text = filtredSubtitleItem[indexPath.row]
+		
+//		for (index, dictionary) in listItem.enumerated() {
+//			for (key, value) in dictionary {
+//				print("Индекс: \(index) – Соварь:\(dictionary)")
+//				print("Ключ: \(key) – Значение: \(value)")
+//				cell.textLabel?.text = listItem[index][key] as? String
+//			}
+//		}
+//
+//		for (index, dictionary) in subtitleItem.enumerated() {
+//			for (key, _) in dictionary {
+//				cell.detailTextLabel?.text = subtitleItem[index][key] as? String
+//			}
+//		}
+//		print(indexPath.row)
+//		print(listItem)
+//		print(listItem[3]["3й"])
 		return cell
 	}
 	
@@ -288,15 +242,21 @@ extension WordsViewController: UITableViewDelegate, UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-		let swipeDelete = UIContextualAction(style: .normal, title: "Delete") { (action, view, success) in
-			removeListItem(at: indexPath.row)
-			removeSubtitleItem(at: indexPath.row)
+		
+		_ = indexOfFiltredListItems(incomingIndex: indexPath.row)
+		_ = indexOfFiltredSubtitleItems(incomingIndex: indexPath.row)
+		
+		let swipeDelete = UIContextualAction(style: .normal, title: "Удалить") { (action, view, success) in
+			removeFiltredWordListItem(indexPath.row)
+			removeMainWordListItem(indexOfFiltredListItem)
+			
 			tableView.deleteRows(at: [indexPath], with: .middle)
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
 				self.countItemsLabel.text = "\(listItem.count) фраз"
 			}
 		}
-		swipeDelete.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+		swipeDelete.backgroundColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
+		swipeDelete.image = .init(systemName: "trash.fill")
 		
 		let blockingLongSwipe = UISwipeActionsConfiguration(actions: [swipeDelete])
 //		blockingLongSwipe.performsFirstActionWithFullSwipe = false
@@ -313,49 +273,12 @@ extension WordsViewController: UITextFieldDelegate {
 		return subtitleItemField.resignFirstResponder()
 	}
 	
-//	func originOfMyListItemView() {
-//		listItemView.frame.origin.y += (listItemView.frame.height - listItemView.frame.height)
-		
-//		let originOfView = (view.frame.height - listItemView.frame.height)
-//		let r: () = (listItemView.frame.origin.y -= view.frame.height)
-//		listItemView.frame.origin.y -= view.frame.height
-//		let originOfView = ((listItemView.frame.height + listItemView.frame.origin.y) + (view.frame.height - listItemView.frame.height))
-//		print("Новый Origin моего вью : \(originOfView)")
-//	}
-	
 	@objc func keyboardWillShow(_ notification: Notification) {
 		let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
 		let myFieldViewMaxY = (listItemView.frame.maxY - listItemView.frame.origin.y) + listItemView.frame.origin.y
 		if listItemView.frame.maxY != keyboardSize!.origin.y {
 			listItemView.frame.origin.y -= (myFieldViewMaxY - keyboardSize!.origin.y)
 		}
-		
-//		if listItemView.frame.maxY >= keyboardSize!.origin.y {
-//			listItemView.frame.origin.y -= (myFieldViewMaxY - keyboardSize!.origin.y)
-//		} else if listItemView.frame.maxY <= keyboardSize!.origin.y {
-//			listItemView.frame.origin.y += (keyboardSize!.origin.y - myFieldViewMaxY)
-//		}
-//		let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-//		if listItemView.frame.maxY != keyboardSize!.origin.y && listItemField.becomeFirstResponder() {
-//			listItemView.frame.origin.y -= keyboardSize!.height
-//		}
-//		let myViewPlusKeyboardSize: () = listItemView.frame.origin.y -= keyboardSize!.height
-//		listItemView.frame.origin.y -= keyboardSize!.height
-		
-//		let viewY = view.frame.origin.y
-//		let viewH = view.frame.height
-//		let myViewY = listItemView.frame.origin.y
-//		let myViewMaxY = listItemView.frame.maxY
-//		let y = keyboardSize?.origin.y
-//		let h = keyboardSize?.height
-//
-//
-//		print("Origin экрана по Y : \(viewY)")
-//		print("Высота экрана : \(viewH)")
-//		print("Origin моего вью по Y : \(myViewY)")
-//		print("MaxY моего вью по Y : \(myViewMaxY)")
-//		print("Origin клавиатуры по Y : \(y as Any)")
-//		print("Высота клавиатуры : \(h as Any)")
 	}
 	
 	@objc func keyboardWillHide(_ notification: Notification) {

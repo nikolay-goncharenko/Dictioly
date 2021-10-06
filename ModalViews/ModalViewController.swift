@@ -14,12 +14,6 @@ class ModalViewController: UIViewController {
 	@IBOutlet weak var modalTextField: UITextField!
 	@IBOutlet weak var modalCreateButton: UIButton!
 	@IBOutlet weak var modalCloseButton: UIButton!
-	
-//	@IBOutlet weak var flagFromLeftSide: UIImageView!
-//	@IBOutlet weak var flagFromRightSide: UIImageView!
-//	@IBOutlet weak var languageLabelFromLeftSide: UILabel!
-//	@IBOutlet weak var languageRightFromLeftSide: UILabel!
-	
 	@IBOutlet weak var flagFromLeftSide: UIButton!
 	@IBOutlet weak var flagFromRightSide: UIButton!
 	@IBOutlet weak var languageButtonFromLeftSide: UIButton!
@@ -29,11 +23,7 @@ class ModalViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-//		view.isOpaque = false
-//		view.backgroundColor = UIColor.gray.withAlphaComponent(0.4)
-//		modalWindow.backgroundColor = .white
-//		view.backgroundColor = UIBlurEffect(style: .prominent)
-//		view.layer.backgroundColor = CGColor(gray: 1, alpha: 0.4)
+		
 		modalWindow.center = view.center
 		modalWindow.layer.cornerRadius = 8
 		modalTextField.layer.cornerRadius = 8
@@ -45,8 +35,6 @@ class ModalViewController: UIViewController {
 		modalTextField.clearButtonMode = .whileEditing
 		modalTextField.layer.borderWidth = 0.1
 		modalTextField.layer.cornerRadius = 8
-//		modalTextField.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-//		modalTextField.tintColor = #colorLiteral(red: 0.8235294118, green: 0.8235294118, blue: 0.8274509804, alpha: 1)
 		modalTextField.layer.masksToBounds = true
 		
 		flagFromLeftSide.layer.borderWidth = 0.1
@@ -106,21 +94,6 @@ extension ModalViewController: UITextFieldDelegate {
 		if modalWindow.frame.maxY != keyboardSize!.origin.y {
 			modalWindow.frame.origin.y -= ((myModalViewMaxY - keyboardSize!.origin.y) + 50.0)
 		}
-		
-//		let viewY = view.frame.origin.y
-//		let viewH = view.frame.height
-//		let modalViewY = modalWindow.frame.origin.y
-//		let modalViewMaxY = modalWindow.frame.maxY
-//		let y = keyboardSize?.origin.y
-//		let h = keyboardSize?.height
-//
-//		print("Origin экрана по Y : \(viewY)")
-//		print("Высота экрана : \(viewH)")
-//		print("Origin моего вью по Y : \(modalViewY)")
-//		print("MaxY моего вью по Y : \(modalViewMaxY)")
-//		print("Origin клавиатуры по Y : \(y as Any)")
-//		print("Высота клавиатуры : \(h as Any)")
-		
 	}
 
 	@objc func keyboardWillHide(_ notification: Notification) {

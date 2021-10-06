@@ -43,7 +43,7 @@ class WordsViewController: UIViewController {
 		flagFromRightSide.layer.cornerRadius = 15
 		flagFromRightSide.tintColor = #colorLiteral(red: 0.8235294118, green: 0.8235294118, blue: 0.8274509804, alpha: 1)
 		
-		countItemsLabel.text = "\(filtredListItem.count) фраз"
+		countItemsLabel.text = "Фраз в списке: \(filtredListItem.count)"
 		countItemsLabel.adjustsFontSizeToFitWidth = true
 		
 		listTableView.delegate = self
@@ -95,7 +95,6 @@ class WordsViewController: UIViewController {
 		subtitleItemField.addTarget(self, action: #selector(blockingAdditionItemToList), for: .editingChanged)
 		
 		refreshData.addTarget(self, action: #selector(manualRefreshData), for: .valueChanged)
-//		listTableView.addSubview(refreshData)
 	}
 	
 	@objc func manualRefreshData() {
@@ -105,14 +104,9 @@ class WordsViewController: UIViewController {
 		_ = filteredSubtitleItems(currentItem: navigationItem.title!)
 		refreshData.endRefreshing()
 		if forTranslationData != filtredListItem.count && translationData != filtredSubtitleItem.count {
-			countItemsLabel.text = "\(filtredListItem.count) фраз"
 			let indexPathNewRow = IndexPath(row: filtredListItem.count - 1, section: 0)
-//			print(filtredListItem.count)
-//			print(indexPathNewRow)
 			listTableView.insertRows(at: [indexPathNewRow], with: .bottom)
-		} /*else {
-			print("Кол-во ячеек не изменилось")
-		}*/
+		}
 	}
 	
 	@objc func changeLanguage() {
@@ -178,12 +172,6 @@ class WordsViewController: UIViewController {
 			addSubtitleItem(nameItem: subtitleItemField.text!)
 			manualRefreshData()
 		}
-		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-			self.listTableView.reloadData()
-//			self.countItemsLabel.text = "\(listItem.count) фраз"
-			self.countItemsLabel.text = "\(filtredListItem.count) фраз"
-		}
 		listItemField.resignFirstResponder()
 		subtitleItemField.resignFirstResponder()
 		listItemField.text = .none
@@ -218,22 +206,7 @@ extension WordsViewController: UITableViewDelegate, UITableViewDataSource {
 		cell.textLabel?.text = filtredListItem[indexPath.row]
 		cell.detailTextLabel?.text = filtredSubtitleItem[indexPath.row]
 		
-//		for (index, dictionary) in listItem.enumerated() {
-//			for (key, value) in dictionary {
-//				print("Индекс: \(index) – Соварь:\(dictionary)")
-//				print("Ключ: \(key) – Значение: \(value)")
-//				cell.textLabel?.text = listItem[index][key] as? String
-//			}
-//		}
-//
-//		for (index, dictionary) in subtitleItem.enumerated() {
-//			for (key, _) in dictionary {
-//				cell.detailTextLabel?.text = subtitleItem[index][key] as? String
-//			}
-//		}
-//		print(indexPath.row)
-//		print(listItem)
-//		print(listItem[3]["3й"])
+//		print(listItem.count)
 		return cell
 	}
 	
@@ -252,14 +225,14 @@ extension WordsViewController: UITableViewDelegate, UITableViewDataSource {
 			
 			tableView.deleteRows(at: [indexPath], with: .middle)
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-				self.countItemsLabel.text = "\(listItem.count) фраз"
+				self.countItemsLabel.text = "Фраз в списке: \(filtredListItem.count)"
 			}
 		}
 		swipeDelete.backgroundColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
 		swipeDelete.image = .init(systemName: "trash.fill")
 		
 		let blockingLongSwipe = UISwipeActionsConfiguration(actions: [swipeDelete])
-//		blockingLongSwipe.performsFirstActionWithFullSwipe = false
+		blockingLongSwipe.performsFirstActionWithFullSwipe = false
 		
 		return blockingLongSwipe
 	}

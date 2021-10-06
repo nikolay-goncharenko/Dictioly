@@ -78,16 +78,10 @@ func saveValue(at value: String) -> String {
 var indexOfComparisonValue: Int = 0
 
 func indexOfComperisonValues(incomingIndex: Int) -> Int {
-	
-	let filtredItemIndex: Int = incomingIndex
-	var vocabularyValue: String = "".lowercased()
-	
 	for (index, dictionary) in vocabularyItem.enumerated() {
 		for (_, value) in dictionary {
-			
-			vocabularyValue = value as! String
-			
-			if vocabularyValue == filtredItem[filtredItemIndex] {
+			let vocabularyValue = value as! String
+			if vocabularyValue.lowercased() == filtredItem[incomingIndex].lowercased() {
 				indexOfComparisonValue = index
 			}
 		}
@@ -115,16 +109,10 @@ var indexOfFiltredListItem: Int = 0
 var indexOfFiltredSubtitleItem: Int = 0
 
 func indexOfFiltredListItems(incomingIndex: Int) -> Int {
-	
-	let filtredListItemIndex: Int = incomingIndex
-	var listItemValue: String = "".lowercased()
-	
 	for (index, dictionary) in listItem.enumerated() {
 		for (_, value) in dictionary {
-			
-			listItemValue = value as! String
-			
-			if listItemValue == filtredListItem[filtredListItemIndex] {
+			let listItemValue = value as! String
+			if listItemValue.lowercased() == filtredListItem[incomingIndex].lowercased() {
 				indexOfFiltredListItem = index
 			}
 		}
@@ -133,16 +121,10 @@ func indexOfFiltredListItems(incomingIndex: Int) -> Int {
 }
 
 func indexOfFiltredSubtitleItems(incomingIndex: Int) -> Int {
-	
-	let filtredSubtitleItemIndex: Int = incomingIndex
-	var subtitleItemValue: String = "".lowercased()
-	
 	for (index, dictionary) in subtitleItem.enumerated() {
 		for (_, value) in dictionary {
-			
-			subtitleItemValue = value as! String
-			
-			if subtitleItemValue == filtredSubtitleItem[filtredSubtitleItemIndex] {
+			let subtitleItemValue = value as! String
+			if subtitleItemValue.lowercased() == filtredSubtitleItem[incomingIndex].lowercased() {
 				indexOfFiltredSubtitleItem = index
 			}
 		}
@@ -179,6 +161,34 @@ func filteredSubtitleItems(currentItem: String) -> Array<String> {
 		}
 	}
 	return filtredSubtitleItem
+}
+
+func mainPhraseCounter(incomingIndex: Int) -> Int {
+	var mainPhraseInArray: [String] = []
+	let vocabularyPhraseValue = vocabularyItem[incomingIndex]["Name"] as! String
+	
+	for mainWordListDictionary in listItem {
+		for (key, _) in mainWordListDictionary {
+			if vocabularyPhraseValue.lowercased() == key.lowercased() {
+				mainPhraseInArray.append(key)
+			}
+		}
+	}
+	return mainPhraseInArray.count
+}
+
+func filtredPhraseCounter(incomingIndex: Int) -> Int {
+	var filtredPhraseInArray: [String] = []
+	let filtredPhraseValue = filtredItem[incomingIndex]
+	
+	for filtredWordListDictionary in listItem {
+		for (key, _) in filtredWordListDictionary {
+			if filtredPhraseValue.lowercased() == key.lowercased() {
+				filtredPhraseInArray.append(key)
+			}
+		}
+	}
+	return filtredPhraseInArray.count
 }
 
 // MARK: - Methods for saving data to storege

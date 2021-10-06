@@ -101,12 +101,12 @@ class TableViewController: UITableViewController {
 				cell.nameOfWordListLabel.text = filtredItem[indexPath.row]
 				cell.flagImageFromLeftSide.image = #imageLiteral(resourceName: "usa")
 				cell.flagImageFromRightSide.image = #imageLiteral(resourceName: "russia")
-				cell.countItemsLabel.text = "\(filtredListItem.count) фраз"
+				cell.countItemsLabel.text = "Фраз в списке: \(filtredPhraseCounter(incomingIndex: indexPath.row))"
 			} else {
 				cell.nameOfWordListLabel.text = vocabularyItem[indexPath.row]["Name"] as? String
 				cell.flagImageFromLeftSide.image = #imageLiteral(resourceName: "usa")
 				cell.flagImageFromRightSide.image = #imageLiteral(resourceName: "russia")
-				cell.countItemsLabel.text = "\(filtredListItem.count) фраз"
+				cell.countItemsLabel.text = "Фраз в списке: \(mainPhraseCounter(incomingIndex: indexPath.row))"
 				
 				if tableView.isEditing {
 					cell.nameOfWordListLabel.textColor = .systemGray

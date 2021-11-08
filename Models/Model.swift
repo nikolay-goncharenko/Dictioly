@@ -163,7 +163,32 @@ func filteredSubtitleItems(currentItem: String) -> Array<String> {
 	return filtredSubtitleItem
 }
 
-func mainPhraseCounter(incomingIndex: Int) -> Int {
+var filtredOriginalItem: [String] = []
+var filtredTranslationItem: [String] = []
+
+func filtredOriginalItem(_ currentOriginalItem: String) -> Array<String> {
+	filtredOriginalItem.removeAll()
+	for origialItem in filtredListItem {
+		filtredOriginalItem.append(origialItem.filter {_ in
+			return origialItem.lowercased().contains(currentOriginalItem.lowercased())
+		})
+		filtredOriginalItem.removeAll{$0 == ""}
+	}
+	return filtredOriginalItem
+}
+
+func filtredTranslationItems(_ currentTranslationItem: String) -> Array<String> {
+	filtredTranslationItem.removeAll()
+	for translationItem in filtredListItem {
+		filtredTranslationItem.append(translationItem.filter {_ in
+			return translationItem.lowercased().contains(currentTranslationItem.lowercased())
+		})
+		filtredTranslationItem.removeAll{$0 == ""}
+	}
+	return filtredTranslationItem
+}
+
+func mainPhraseCounter(_ incomingIndex: Int) -> Int {
 	var mainPhraseInArray: [String] = []
 	let vocabularyPhraseValue = vocabularyItem[incomingIndex]["Name"] as! String
 	
@@ -177,7 +202,7 @@ func mainPhraseCounter(incomingIndex: Int) -> Int {
 	return mainPhraseInArray.count
 }
 
-func filtredPhraseCounter(incomingIndex: Int) -> Int {
+func filtredPhraseCounter(_ incomingIndex: Int) -> Int {
 	var filtredPhraseInArray: [String] = []
 	let filtredPhraseValue = filtredItem[incomingIndex]
 	
@@ -213,6 +238,46 @@ func removeMainItem(_ index: Int) {
 
 func removeFiltredItem(_ index: Int) {
 	filtredItem.remove(at: index)
+}
+
+func removeAllOriginalInsertedNotes(_ incomingIndex: Int) -> Bool {
+	filtredListItem.removeAll()
+	let originalVocabularyItem = vocabularyItem[incomingIndex]["Name"] as! String
+	for (internalIndex, listItemDictionary) in listItem.enumerated() {
+		for (internalKey, _) in listItemDictionary {
+			if internalKey.lowercased() == originalVocabularyItem.lowercased() {
+//				listItem.remove(at: internalIndex + 1)
+				print("Индекс: \(internalIndex)")
+				print("Оригинал: \(listItem[internalIndex])")
+				print("Всего элементов оригинала: \(listItem.count)")
+			}
+			
+//			listItem.removeAll(where: { _ in
+//				internalKey.lowercased() == originalVocabularyItem.lowercased()
+//			})
+		}
+	}
+	return true
+}
+
+func removeAllTranslationInsertedNotes(_ incomingIndex: Int) -> Bool {
+	filtredSubtitleItem.removeAll()
+	let translationVocabularyItem = vocabularyItem[incomingIndex]["Name"] as! String
+	for (subtitleIndex, subtitleItemDictionary) in subtitleItem.enumerated() {
+		for (subtitleKey, _) in subtitleItemDictionary {
+			if subtitleKey.lowercased() == translationVocabularyItem.lowercased() {
+//				subtitleItem.remove(at: subtitleIndex + 1)
+				print("Индекс: \(subtitleIndex)")
+				print("Перевод: \(subtitleItem[subtitleIndex])")
+				print("Всего элементов перевода: \(subtitleItem.count)")
+			}
+			
+//			subtitleItem.removeAll(where: { _ in
+//				subtitleKey.lowercased() == translationVocabularyItem.lowercased()
+//			})
+		}
+	}
+	return true
 }
 
 func removeMainWordListItem(_ index: Int) {

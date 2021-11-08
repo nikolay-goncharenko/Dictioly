@@ -11,6 +11,7 @@ class WordsViewController: UIViewController {
 
 	@IBOutlet weak var searchItemButton: UIBarButtonItem!
 	@IBOutlet weak var flagFromLeftSide: UIImageView!
+	@IBOutlet weak var rightArrow: UILabel!
 	@IBOutlet weak var flagFromRightSide: UIImageView!
 	@IBOutlet weak var countItemsLabel: UILabel!
 	@IBOutlet weak var searchBarView: UIView!
@@ -27,6 +28,7 @@ class WordsViewController: UIViewController {
 	
 	var textOfNavigationTitle: String = ""
 	var refreshData = UIRefreshControl()
+	let backgroundColorView = UIView()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -34,6 +36,11 @@ class WordsViewController: UIViewController {
 		navigationItem.largeTitleDisplayMode = .never
 		
 		myNavigTitle()
+		
+		searchItemBar.delegate = self
+		searchItemBar.isHidden = true
+		searchItemBar.searchBarStyle = .minimal
+		searchItemBar.placeholder = "Найти слово или фразу"
 		
 		flagFromLeftSide.layer.borderWidth = 0.1
 		flagFromLeftSide.layer.cornerRadius = 15
@@ -95,6 +102,25 @@ class WordsViewController: UIViewController {
 		subtitleItemField.addTarget(self, action: #selector(blockingAdditionItemToList), for: .editingChanged)
 		
 		refreshData.addTarget(self, action: #selector(manualRefreshData), for: .valueChanged)
+		
+	}
+	
+	@IBAction func switchSearchBar(_ sender: UIBarButtonItem) {
+		if searchItemBar.isHidden == true {
+			searchItemBar.isHidden = false
+			searchItemBar.becomeFirstResponder()
+			flagFromLeftSide.isHidden = true
+			rightArrow.isHidden = true
+			flagFromRightSide.isHidden = true
+			countItemsLabel.isHidden = true
+		} else {
+			searchItemBar.isHidden = true
+			flagFromLeftSide.isHidden = false
+			rightArrow.isHidden = false
+			flagFromRightSide.isHidden = false
+			countItemsLabel.isHidden = false
+			searchBarCancelButtonClicked(searchItemBar)
+		}
 	}
 	
 	@objc func manualRefreshData() {
@@ -171,6 +197,7 @@ class WordsViewController: UIViewController {
 			addListItem(nameItem: listItemField.text!)
 			addSubtitleItem(nameItem: subtitleItemField.text!)
 			manualRefreshData()
+			countItemsLabel.text = "Фраз в списке: \(filtredListItem.count)"
 		}
 		listItemField.resignFirstResponder()
 		subtitleItemField.resignFirstResponder()
@@ -186,8 +213,35 @@ extension WordsViewController: UINavigationControllerDelegate {
 	}
 }
 
-extension WordsViewController: UISearchBarDelegate {
+extension WordsViewController: UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
 	
+	func searchBarIsEmpty() -> Bool {
+		return true
+	}
+	
+	func searchBarIsActive() -> Bool {
+		return true
+	}
+	
+	func updateSearchResults(for searchController: UISearchController) {
+		print("!")
+	}
+	
+	
+	func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+		searchItemBar.setShowsCancelButton(true, animated: true)
+		return true
+	}
+	
+	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+		searchItemBar.setShowsCancelButton(false, animated: true)
+		searchItemBar.resignFirstResponder()
+	}
+	
+	func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+		let cancelSearchButton = searchItemBar.value(forKey: "cancelButton") as? UIButton
+		cancelSearchButton?.setTitle("Отмена", for: .normal)
+	}
 }
 
 extension WordsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -197,7 +251,16 @@ extension WordsViewController: UITableViewDelegate, UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return filtredListItem.count
+		
+		if filtredListItem.count > 0 && filtredSubtitleItem.count > 0 {
+			backgroundColorView.backgroundColor = UIColor.systemBackground
+			tableView.backgroundView = backgroundColorView
+			return filtredListItem.count
+		} else {
+			tableView.backgroundView = UIImageView.init(image: UIImage.init(named: "backroundImage"))
+			return 0
+		}
+		
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -207,6 +270,9 @@ extension WordsViewController: UITableViewDelegate, UITableViewDataSource {
 		cell.detailTextLabel?.text = filtredSubtitleItem[indexPath.row]
 		
 //		print(listItem.count)
+//		print(subtitleItem.count)
+//		print(filtredListItem[indexPath.row])
+//		print(filtredSubtitleItem[indexPath.row])
 		return cell
 	}
 	

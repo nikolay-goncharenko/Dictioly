@@ -88,6 +88,9 @@ class TableViewController: UITableViewController {
 		} else if searchBarIsActive() && filtredItem.count <= 0 {
 			tableView.backgroundView = UIImageView.init(image: UIImage.init(named: "backroundImage"))
 			return 0
+		} else if vocabularyItem.count <= 0 {
+			tableView.backgroundView = UIImageView.init(image: UIImage.init(named: "backroundImage"))
+			return 0
 		} else {
 			backgroundColorView.backgroundColor = UIColor.systemGray6
 			tableView.backgroundView = backgroundColorView
@@ -101,12 +104,12 @@ class TableViewController: UITableViewController {
 				cell.nameOfWordListLabel.text = filtredItem[indexPath.row]
 				cell.flagImageFromLeftSide.image = #imageLiteral(resourceName: "usa")
 				cell.flagImageFromRightSide.image = #imageLiteral(resourceName: "russia")
-				cell.countItemsLabel.text = "Фраз в списке: \(filtredPhraseCounter(incomingIndex: indexPath.row))"
+				cell.countItemsLabel.text = "Фраз в списке: \(filtredPhraseCounter(indexPath.row))"
 			} else {
 				cell.nameOfWordListLabel.text = vocabularyItem[indexPath.row]["Name"] as? String
 				cell.flagImageFromLeftSide.image = #imageLiteral(resourceName: "usa")
 				cell.flagImageFromRightSide.image = #imageLiteral(resourceName: "russia")
-				cell.countItemsLabel.text = "Фраз в списке: \(mainPhraseCounter(incomingIndex: indexPath.row))"
+				cell.countItemsLabel.text = "Фраз в списке: \(mainPhraseCounter(indexPath.row))"
 				
 				if tableView.isEditing {
 					cell.nameOfWordListLabel.textColor = .systemGray
@@ -151,6 +154,9 @@ class TableViewController: UITableViewController {
 		
 		_ = saveIndex(at: indexPath.row)
 		
+		_ = removeAllOriginalInsertedNotes(indexPath.row)
+		_ = removeAllTranslationInsertedNotes(indexPath.row)
+		
 		if searchBarIsActive() {
 			_ = indexOfComperisonValues(incomingIndex: indexPath.row)
 		}
@@ -162,6 +168,9 @@ class TableViewController: UITableViewController {
 				removeMainItem(indexOfComparisonValue)
 				tableView.deleteRows(at: [indexPath], with: .middle)
 			} else {
+//				if removeAllOriginalInsertedNotes(indexOfCell) && removeAllTranslationInsertedNotes(indexOfCell) {
+//					removeMainItem(indexPath.row)
+//				}
 				removeMainItem(indexPath.row)
 				tableView.deleteRows(at: [indexPath], with: .middle)
 			}

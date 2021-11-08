@@ -74,6 +74,11 @@
                                         <rect key="frame" x="72" y="10" width="30" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kav-0y-khG">
+                                        <rect key="frame" x="8" y="0.0" width="359" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </searchBar>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <gestureRecognizers/>
@@ -126,7 +131,11 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="sYF-lL-di6">
-                        <barButtonItem key="rightBarButtonItem" image="back" id="LmD-kV-4x3"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="LmD-kV-4x3">
+                            <connections>
+                                <action selector="switchSearchBar:" destination="8Cm-ou-Lbb" id="KY7-eD-9CD"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="addItemToList" destination="HhS-Wz-gZy" id="ClT-vk-bxF"/>
@@ -139,7 +148,9 @@
                         <outlet property="listItemField" destination="vOo-7P-C3e" id="Gid-xd-kRd"/>
                         <outlet property="listItemView" destination="z8n-MQ-VwR" id="tk6-Nt-a7N"/>
                         <outlet property="listTableView" destination="pWE-CD-fwY" id="B0Q-NL-mbH"/>
+                        <outlet property="rightArrow" destination="dtG-Vx-JqZ" id="1Fq-cG-90K"/>
                         <outlet property="searchBarView" destination="Pfu-FX-WUX" id="I0u-ct-TA2"/>
+                        <outlet property="searchItemBar" destination="kav-0y-khG" id="WVt-Te-A3s"/>
                         <outlet property="searchItemButton" destination="LmD-kV-4x3" id="3V7-bC-akI"/>
                         <outlet property="subtitleItemField" destination="k4q-i3-76k" id="Xfa-UE-Yl4"/>
                     </connections>
@@ -537,7 +548,6 @@
         <image name="arrow.forward.circle.fill" catalog="system" width="128" height="121"/>
         <image name="arrow.left.arrow.right" catalog="system" width="119" height="128"/>
         <image name="arrow.up.arrow.down" catalog="system" width="128" height="98"/>
-        <image name="back" width="128" height="128"/>
         <image name="clear" catalog="system" width="128" height="114"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="121"/>
         <image name="russia" width="180" height="180"/>
